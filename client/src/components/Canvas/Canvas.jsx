@@ -19,6 +19,32 @@ const Canvas = observer(() => {
   // useEffect
   useEffect(() => {
     ConvasState.setConvas(canvasRef.current);
+    axios.get(`http://localhost:5000/image?id=${id}`).then((response) => {
+      try {
+        const img = new Image();
+        console.log("response.data", response.data);
+        img.src = response.data;
+        const ctx = canvasRef.current.getContext("2d");
+        img.onload = () => {
+          ctx.clearRect(
+            0,
+            0,
+            canvasRef.current.width,
+            canvasRef.current.height
+          );
+          ctx.drawImage(
+            img,
+            0,
+            0,
+            canvasRef.current.width,
+            canvasRef.current.height
+          );
+          ctx.stroke();
+        };
+      } catch (e) {
+        console.log(e);
+      }
+    });
   }, []);
   useEffect(() => {
     if (ConvasState.username) {
@@ -79,11 +105,11 @@ const Canvas = observer(() => {
   };
   const mouseDownHandler = () => {
     ConvasState.pushToUndo(canvasRef.current.toDataURL());
-    // axios
-    //   .post(`http://localhost:5000/image?id=${id}`, {
-    //     img: canvasRef.current.toDataURL(),
-    //   })
-    //   .then((response) => console.log(response.data));
+    axios
+      .post(`http://localhost:5000/image?id=${id}`, {
+        img: canvasRef.current.toDataURL(),
+      })
+      .then((response) => console.log(response.data));
   };
   const connectionHandler = () => {
     ConvasState.setUsername(usernameRef.current.value);
