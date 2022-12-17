@@ -1,5 +1,5 @@
 # Fullstack react express canvas app 
-React, Canvas, Webpack, Express 
+React, Mobx, Canvas, Webpack, Express 
 
 ## Available scripts to start application
 
